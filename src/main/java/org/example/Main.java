@@ -19,7 +19,7 @@ public class Main {
             Game game = new Game(dict, log);
 
             Scanner sc = new Scanner(System.in, "UTF-8");
-            System.out.println("WORDLE на русском яязыке — 5 букв, 6 попыток");
+            System.out.println("WORDLE на русском языке — 5 букв, 6 попыток");
             System.out.println("Нажми Enter — и получишь подсказку\n");
 
             while (game.hasAttempts() && !game.isWon()) {
@@ -27,11 +27,13 @@ public class Main {
                 String input = sc.nextLine().trim().toLowerCase().replace('ё', 'е');
 
                 if (input.isEmpty()) {
-                    System.out.println("Подсказка: " + game.getHint() + "\n");
+                    System.out.println("Подсказка: " + game.getHint());
+                    log.println("Игрок попросил подсказку");
                     continue;
                 }
                 if (input.length() != 5 || !input.matches("[а-я]+")) {
-                    System.out.println("Только 5 букв!\n");
+                    System.out.println("Только 5 букв!");
+                    log.println("Некорректный ввод: \"" + input + "\"");
                     continue;
                 }
 
@@ -46,7 +48,7 @@ public class Main {
                 }
             }
 
-            System.out.println(game.isWon() ? "ООО да, ты выйгал!!!" : "Поражение :(");
+            System.out.println(game.isWon() ? "ООО да, ты выйграл!!!" : "Поражение :(");
             System.out.println("Загаданное слово: " + game.getSecret());
 
             log.println("Игра закончена.Победил: " + game.isWon());
