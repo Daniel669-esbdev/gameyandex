@@ -6,11 +6,12 @@ import java.io.PrintWriter;
 public class Game {
     private final Dict dict;
     private final String secret;
-    private final PrintWriter log;
+    private final PrintWriter log; //если удаляю, то нету зависимости, поэтому оставлю
     private int attempts = 6;
     private boolean won = false;
     private final List<String> guesses = new ArrayList<>();
     private final List<String> hints = new ArrayList<>();
+    private final Random random = new Random();
 
     public Game(Dict dict, PrintWriter log) {
         this.dict = dict;
@@ -33,20 +34,22 @@ public class Game {
     public String getHint() {
         List<String> possible = dict.getPossible(guesses, hints);
         if (possible.isEmpty()) return "ошибка (нет слов)";
-        String h = possible.get(new Random().nextInt(possible.size()));
+        String h = possible.get(random.nextInt(possible.size()));
         while (guesses.contains(h) && possible.size() > 1)
-            h = possible.get(new Random().nextInt(possible.size()));
+            h = possible.get(random.nextInt(possible.size()));
         return h;
     }
 
     private String hint(String g, String s) {
         StringBuilder sb = new StringBuilder("*****");
         boolean[] used = new boolean[5];
+        boolean[] present = new boolean[5];
 
         for (int i = 0; i < 5; i++) {
             if (g.charAt(i) == s.charAt(i)) {
                 sb.setCharAt(i, '+');
                 used[i] = true;
+                present[i] = true;
             }
         }
         for (int i = 0; i < 5; i++) {
@@ -56,8 +59,14 @@ public class Game {
                 if (!used[j] && s.charAt(j) == c) {
                     sb.setCharAt(i, '^');
                     used[j] = true;
+                    present[i] = true;
                     break;
                 }
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            if (!present[i]) {
+                sb.setCharAt(i, '-');
             }
         }
         return sb.toString();
