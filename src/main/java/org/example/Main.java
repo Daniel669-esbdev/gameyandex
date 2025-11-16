@@ -26,14 +26,14 @@ public class Main {
                 System.out.print("> ");
                 String input = sc.nextLine().trim().toLowerCase().replace('ё', 'е');
 
-                if (input.isEmpty()) {
-                    System.out.println("Подсказка: " + game.getHint());
-                    log.println("Игрок попросил подсказку");
-                    continue;
-                }
-                if (input.length() != 5 || !input.matches("[а-я]+")) {
-                    System.out.println("Только 5 букв!");
-                    log.println("Некорректный ввод: \"" + input + "\"");
+                if (input.isEmpty() || input.length() != 5 || !input.matches("[а-я]+")) {
+                    if (input.isEmpty()) {
+                        System.out.println("Подсказка: " + game.getHint());
+                        log.println("Игрок попросил подсказку");
+                    } else {
+                        System.out.println("Только 5 букв!");
+                        log.println("Некорректный ввод: \"" + input + "\"");
+                    }
                     continue;
                 }
 
